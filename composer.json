@@ -1,0 +1,19 @@
+{
+    "name": "kirano-dev/laravel-personal-list",
+    "description": "Manage users cart, wishlist, and any other personal lists",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "KiranoDev\\LaravelPersonalList\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "kirano-dev",
+            "email": "developer@kirano.uz"
+        }
+    ],
+    "require-dev": {
+        "laravel/framework": "^11.30"
+    }
+}
