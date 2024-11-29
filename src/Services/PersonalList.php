@@ -45,6 +45,7 @@ class PersonalList
         $personalListItem = new PersonalListItem();
 
         $personalListItem->original = $item;
+        $personalListItem->price = $item->price;
         $personalListItem->quantity = 1;
         $personalListItem->checked = true;
 
@@ -75,6 +76,11 @@ class PersonalList
         $this->data[$id]->count = $count;
 
         $this->save();
+    }
+
+    public function total(): int
+    {
+        return array_reduce($this->data, fn($carry, $item) => $carry + ($item->price * $item->quantity), 0);
     }
 
     public function count(): int {
