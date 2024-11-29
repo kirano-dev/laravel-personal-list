@@ -102,7 +102,7 @@ class PersonalList
         $quantity = $this->data[$item->id]->quantity;
 
         if($quantity > 1) {
-            $this->data[$item->id]->quantity =  - 1;
+            $this->data[$item->id]->quantity = $quantity - 1;
         } else if ($quantity === 1) {
             $this->remove($item->original);
         }
