@@ -48,6 +48,7 @@ class PersonalList
         $personalListItem->price = $item->price;
         $personalListItem->quantity = 1;
         $personalListItem->checked = true;
+        $personalListItem->id = $item->id;
 
         $personalListItem->meta = $item->getMeta();
 
@@ -71,9 +72,9 @@ class PersonalList
         $this->save();
     }
 
-    public function setCount(int $id, int $count): void
+    public function setQuantity(int $id, int $quantity): void
     {
-        $this->data[$id]->count = $count;
+        $this->data[$id]->quantity = $quantity;
 
         $this->save();
     }
@@ -85,6 +86,26 @@ class PersonalList
 
     public function count(): int {
         return count($this->data);
+    }
+
+    public function increment(PersonalListItem $item): void
+    {
+        $this->data[$item->id]->quantity = $this->data[$item->id]->quantity + 1;
+
+        $this->save();
+    }
+
+    public function decrement(PersonalListItem $item): void
+    {
+        $quantity = $this->data[$item->id]->quantity;
+
+        if($quantity > 1) {
+            $this->data[$item->id]->quantity =  - 1;
+        } else if ($quantity === 1) {
+            $this->remove($item->original);
+        }
+
+        $this->save();
     }
 
     public function clear(): void
