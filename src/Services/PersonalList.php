@@ -84,8 +84,10 @@ class PersonalList
         return array_reduce($this->data, fn($carry, $item) => $carry + ($item->price * $item->quantity), 0);
     }
 
-    public function count(): int {
-        return count($this->data);
+    public function count(bool $deep = false): int {
+        return $deep
+            ? array_reduce($this->data, fn($carry, $item) => $carry + $item->quantity, 0)
+            : count($this->data);
     }
 
     public function increment(PersonalListItem $item): void
