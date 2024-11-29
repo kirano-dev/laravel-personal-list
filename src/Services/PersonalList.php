@@ -16,7 +16,7 @@ class PersonalList
     }
 
     private function getKey(): string {
-        return request()->ip() . $this->name;
+        return request()->ip() . ".$this->name";
     }
 
     private function getData(): array {
@@ -77,7 +77,7 @@ class PersonalList
         $this->save();
     }
 
-    public function total(): int {
+    public function count(): int {
         return count($this->data);
     }
 
