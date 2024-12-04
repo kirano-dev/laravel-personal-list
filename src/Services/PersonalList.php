@@ -15,8 +15,12 @@ class PersonalList
         $this->data = $this->getData();
     }
 
+    private function getDeviceIdentifier(): string {
+        return hash('sha256', request()->header('User-Agent'));
+    }
+
     private function getKey(): string {
-        return request()->ip() . ".$this->name";
+        return $this->getDeviceIdentifier() . ".$this->name";
     }
 
     private function getData(): array {
