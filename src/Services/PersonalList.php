@@ -2,6 +2,7 @@
 
 namespace KiranoDev\LaravelPersonalList\Services;
 
+use Illuminate\Support\Facades\Cache;
 use KiranoDev\LaravelPersonalList\Contracts\Itemable;
 use KiranoDev\LaravelPersonalList\Models\PersonalListItem;
 
@@ -24,7 +25,7 @@ class PersonalList
     }
 
     private function getData(): array {
-        return cache()->get($this->getKey(), []);
+        return Cache::get($this->getKey(), []);
     }
 
     public function remove(Itemable $item): void
@@ -39,7 +40,7 @@ class PersonalList
 
     public function save(?array $data = null): void
     {
-        cache()->set($this->getKey(), $data ?? $this->data);
+        Cache::set($this->getKey(), $data ?? $this->data);
     }
 
     public function add(Itemable $item): self
