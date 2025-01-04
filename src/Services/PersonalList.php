@@ -28,9 +28,11 @@ class PersonalList
         return Cache::get($this->getKey(), []);
     }
 
-    public function remove(Itemable $item): void
+    public function remove(Itemable $item): self
     {
         unset($this->data[$item->id]);
+
+        return $this;
     }
 
     public function has(Itemable $item): bool
@@ -43,14 +45,14 @@ class PersonalList
         Cache::set($this->getKey(), $data ?? $this->data);
     }
 
-    public function add(Itemable $item): self
+    public function add(Itemable $item, ?int $price = null): self
     {
         if($this->has($item)) $this->remove($item);
 
         $personalListItem = new PersonalListItem();
 
         $personalListItem->original = $item;
-        $personalListItem->price = $item->price;
+        $personalListItem->price = $price ?? $item->price ?? 0;
         $personalListItem->quantity = 1;
         $personalListItem->checked = true;
         $personalListItem->id = $item->id;
