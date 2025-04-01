@@ -54,40 +54,37 @@ class PersonalList
     {
         if($this->has($item)) $this->remove($item);
 
-        $personalListItem = new PersonalListItem();
-
-        $personalListItem->original = $item;
-        $personalListItem->price = $price ?? $item->price ?? 0;
-        $personalListItem->quantity = $quantity;
-        $personalListItem->checked = true;
-        $personalListItem->id = $item->id;
-        $personalListItem->meta = $meta;
-
-        $this->data[$item->id] = $personalListItem;
+        $this->data[$item->id] = new PersonalListItem(
+            original: $item,
+            id: $item->id,
+            price: $price ?? $item->price ?? 0,
+            meta: $meta,
+            quantity: $quantity
+        );
 
         return $this;
     }
 
-    public function toggle(Itemable $item): void
+    public function toggle(Itemable $item): self
     {
         if($this->has($item)) $this->remove($item);
         else $this->add($item);
 
-        $this->save();
+        return $this;
     }
 
-    public function toggleCheck(int $id): void
+    public function toggleCheck(int $id): self
     {
         $this->data[$id]->checked = !$this->data[$id]->checked;
 
-        $this->save();
+        return $this;
     }
 
-    public function setQuantity(int $id, int $quantity): void
+    public function setQuantity(int $id, int $quantity): self
     {
         $this->data[$id]->quantity = $quantity;
 
-        $this->save();
+        return $this;
     }
 
     public function total(): int
@@ -101,14 +98,14 @@ class PersonalList
             : count($this->data);
     }
 
-    public function increment(PersonalListItem $item): void
+    public function increment(PersonalListItem $item): self
     {
         $this->data[$item->id]->quantity = $this->data[$item->id]->quantity + 1;
 
-        $this->save();
+        return $this;
     }
 
-    public function decrement(PersonalListItem $item): void
+    public function decrement(PersonalListItem $item): self
     {
         $quantity = $this->data[$item->id]->quantity;
 
@@ -118,7 +115,7 @@ class PersonalList
             $this->remove($item->original);
         }
 
-        $this->save();
+        return $this;
     }
 
     public function clear(): void
