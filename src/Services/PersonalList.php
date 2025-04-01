@@ -45,7 +45,12 @@ class PersonalList
         Cache::set($this->getKey(), $data ?? $this->data);
     }
 
-    public function add(Itemable $item, ?int $price = null): self
+    public function add(
+        Itemable $item,
+        ?int $price = null,
+        array $meta = [],
+        int $quantity = 1
+    ): self
     {
         if($this->has($item)) $this->remove($item);
 
@@ -53,11 +58,10 @@ class PersonalList
 
         $personalListItem->original = $item;
         $personalListItem->price = $price ?? $item->price ?? 0;
-        $personalListItem->quantity = 1;
+        $personalListItem->quantity = $quantity;
         $personalListItem->checked = true;
         $personalListItem->id = $item->id;
-
-        $personalListItem->meta = $item->getMeta();
+        $personalListItem->meta = $meta;
 
         $this->data[$item->id] = $personalListItem;
 
