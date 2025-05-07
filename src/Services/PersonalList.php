@@ -65,10 +65,10 @@ class PersonalList
         return $this;
     }
 
-    public function toggle(Itemable $item): self
+    public function toggle(Itemable $item, ...$args): self
     {
         if($this->has($item)) $this->remove($item);
-        else $this->add($item);
+        else $this->add($item, ...$args);
 
         return $this;
     }
