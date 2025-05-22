@@ -93,7 +93,7 @@ class PersonalList
 
     public function total(): int
     {
-        return array_reduce($this->data, fn($carry, $item) => $carry + ($item->price * $item->quantity), 0);
+        return array_reduce($this->checked(), fn($carry, $item) => $carry + ($item->price * $item->quantity), 0);
     }
 
     public function count(bool $deep = false): int {
