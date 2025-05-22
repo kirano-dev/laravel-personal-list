@@ -28,9 +28,11 @@ class PersonalList
         return cache()->get($this->getKey(), []);
     }
 
-    public function remove(Itemable $item): void
+    public function remove(Itemable $item): self
     {
         unset($this->data[$item->id]);
+
+        return $this;
     }
 
     public function has(Itemable $item): bool
@@ -62,26 +64,26 @@ class PersonalList
         return $this;
     }
 
-    public function toggle(Itemable $item, ...$args): void
+    public function toggle(Itemable $item, ...$args): self
     {
         if($this->has($item)) $this->remove($item);
         else $this->add($item, ...$args);
 
-        $this->save();
+        return $this;
     }
 
-    public function toggleCheck(int $id): void
+    public function toggleCheck(int $id): self
     {
         $this->data[$id]->checked = !$this->data[$id]->checked;
 
-        $this->save();
+        return $this;
     }
 
-    public function setQuantity(int $id, int $quantity): void
+    public function setQuantity(int $id, int $quantity): self
     {
         $this->data[$id]->quantity = $quantity;
 
-        $this->save();
+        return $this;
     }
 
     public function checked(): array
@@ -100,14 +102,14 @@ class PersonalList
             : count($this->data);
     }
 
-    public function increment(PersonalListItem $item): void
+    public function increment(PersonalListItem $item): self
     {
         $this->data[$item->id]->quantity = $this->data[$item->id]->quantity + 1;
 
-        $this->save();
+        return $this;
     }
 
-    public function decrement(PersonalListItem $item): void
+    public function decrement(PersonalListItem $item): self
     {
         $quantity = $this->data[$item->id]->quantity;
 
@@ -117,7 +119,7 @@ class PersonalList
             $this->remove($item->original);
         }
 
-        $this->save();
+        return $this;
     }
 
     public function clear(): void
