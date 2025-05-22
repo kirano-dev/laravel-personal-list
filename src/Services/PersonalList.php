@@ -2,6 +2,7 @@
 
 namespace KiranoDev\LaravelPersonalList\Services;
 
+use Illuminate\Support\Collection;
 use KiranoDev\LaravelPersonalList\Contracts\Itemable;
 use KiranoDev\LaravelPersonalList\Models\PersonalListItem;
 
@@ -83,6 +84,11 @@ class PersonalList
         $this->save();
     }
 
+    public function checked(): array
+    {
+        return array_filter($this->data, fn ($item) => $item->checked);
+    }
+
     public function total(): int
     {
         return array_reduce($this->data, fn($carry, $item) => $carry + ($item->price * $item->quantity), 0);
@@ -117,5 +123,24 @@ class PersonalList
     public function clear(): void
     {
         $this->save([]);
+    }
+
+    public function getCollection(): Collection
+    {
+        return collect(
+            array_map(fn (PersonalListItem $item) => $item->original, $this->data)
+        );
+    }
+
+    public function clearChecked(): void
+    {
+        $checked_ids = array_keys($this->checked());
+
+        $this->save(
+            array_filter(
+                $this->data,
+                fn (PersonalListItem $item) => !in_array($item->id, $checked_ids)
+            )
+        );
     }
 }
