@@ -43,29 +43,29 @@ class PersonalList
         cache()->set($this->getKey(), $data ?? $this->data);
     }
 
-    public function add(Itemable $item): self
+    public function add(Itemable $item, ?int $price = null, ?array $meta = null, int $quantity = 1): self
     {
         if($this->has($item)) $this->remove($item);
 
         $personalListItem = new PersonalListItem();
 
         $personalListItem->original = $item;
-        $personalListItem->price = $item->price;
-        $personalListItem->quantity = 1;
+        $personalListItem->price = $price ?? $item->price;
+        $personalListItem->quantity = $quantity;
         $personalListItem->checked = true;
         $personalListItem->id = $item->id;
 
-        $personalListItem->meta = $item->getMeta();
+        $personalListItem->meta = $meta ?? $item->getMeta();
 
         $this->data[$item->id] = $personalListItem;
 
         return $this;
     }
 
-    public function toggle(Itemable $item): void
+    public function toggle(Itemable $item, ...$args): void
     {
         if($this->has($item)) $this->remove($item);
-        else $this->add($item);
+        else $this->add($item, ...$args);
 
         $this->save();
     }
